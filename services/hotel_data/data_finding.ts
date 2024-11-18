@@ -11,14 +11,38 @@ export function findHotelData(
     hotelIds: string[] = [],
     destinationIds: string[] = []
 ): Hotel[] {
-    // If no hotel_id or destination_id is provided in the input, return all hotels
     if (!hotelIds.length && !destinationIds.length) return hotelData;
 
-    return hotelData.filter((hotel) => {
-        return (
-            (!hotelIds.length || hotelIds.includes(hotel.id)) &&
-            (!destinationIds.length ||
-                destinationIds.includes(hotel.destination_id.toString()))
-        );
-    });
+    return hotelData
+        .filter((hotel) => {
+            const matchesHotel = hotelIds.length
+                ? hotelIds.includes(hotel.id)
+                : true;
+            const matchesDestination = destinationIds.length
+                ? destinationIds.includes(hotel.destination_id.toString())
+                : true;
+
+            return matchesHotel && matchesDestination;
+        })
+        .sort((a, b) => {
+            // Preserve the order of hotelIds
+            if (hotelIds.length) {
+                const indexA = hotelIds.indexOf(a.id);
+                const indexB = hotelIds.indexOf(b.id);
+                return indexA - indexB;
+            }
+
+            // Preserve the order of destinationIds
+            if (destinationIds.length) {
+                const indexA = destinationIds.indexOf(
+                    a.destination_id.toString()
+                );
+                const indexB = destinationIds.indexOf(
+                    b.destination_id.toString()
+                );
+                return indexA - indexB;
+            }
+
+            return 0;
+        });
 }
