@@ -11,9 +11,10 @@ export function removeSpecialCharsAndToLower(str: string): string {
     return str.replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
 }
 
-// Function to normalize strings by removing special characters (excluding spaces and punctuation)
+// Function to normalize strings by removing most special characters, 
+// excluding spaces, punctuation, and some special characters, and converting to lowercase
 export function removeSpecialChars(str: string): string {
-    return str.replace(/[^a-zA-Z0-9\s.,!?;:()'"-]/g, '');
+    return str.replace(/[^a-zA-Z0-9\s.,!?;:()'"-/]/g, '');
 }
 // Function to turn concatenated camel case words into separate lowercase words
 //E.g.: "businessCenter" -> "business center"
