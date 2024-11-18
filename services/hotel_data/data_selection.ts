@@ -188,6 +188,7 @@ export function categorizeAmenities(amenitiesArray: string[]): Amenities {
 
 // Function to filter out duplicate amenities and vague amenities if more specific keywords are found
 export function filterAmenities(amenities: string[]): Amenities {
+    // Categories the amenities before filtering
     const categorizedAmenities: Amenities = categorizeAmenities(amenities);
     const filteredAmenities: Amenities = {};
 
