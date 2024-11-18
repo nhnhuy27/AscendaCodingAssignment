@@ -12,7 +12,7 @@ export function removeSpecialCharsAndToLower(str: string): string {
 }
 
 // Function to normalize strings by removing most special characters, 
-// excluding spaces, punctuation, and some special characters, and converting to lowercase
+// excluding spaces, punctuation, and some special characters
 export function removeSpecialChars(str: string): string {
     return str.replace(/[^a-zA-Z0-9\s.,!?;:()'"-/]/g, '');
 }
