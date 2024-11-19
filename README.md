@@ -50,6 +50,7 @@ Examples:
 
 2. Selection rules:
 - **Hotel names, addresses, cities, and countries:** Prioritize based on number of occurrence, then length (longer is better).
+- **Latitudes and longitudes**: They are considered as a pair. Prioritize based on number of occurrence, then select the first pair in the priority list if there is a tie.
 - **Descriptions:** Prioritize based on number of provided amenities mentioned, then length (shorter is better).
 - **Amenities:** Remove duplicates in each category.
 - **Images**: Remove duplicates with both matching links and descriptions. The image is not removed if its link or description is unique in their category.
