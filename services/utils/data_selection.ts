@@ -1,5 +1,3 @@
-// Function to select data with most occurrences
-// If multiple data have the same number of occurrences, return the one with the longest length
 export function selectMostOccurrence(
     data: (string | number)[]
 ): string | number {
@@ -27,21 +25,20 @@ export function selectMostOccurrence(
             maxOccurrence = occurrence;
             selectedData = item;
         } else if (occurrence === maxOccurrence) {
-            // Handle tie by comparing length if both are strings, or by value if numeric
-            if (
-                typeof item === 'string' &&
-                typeof selectedData === 'string' &&
-                item.length > selectedData.length
-            ) {
+            // Compare as strings for length
+            const currentAsString = item.toString();
+            const selectedAsString = selectedData.toString();
+
+            if (currentAsString.length > selectedAsString.length) {
                 selectedData = item;
-            } else if (
-                typeof item === 'number' &&
-                typeof selectedData === 'number'
-            ) {
-                if (item > selectedData) selectedData = item;
             }
         }
     });
+
+    // Convert back to number if the input was entirely numbers
+    if (typeof data[0] === 'number' && typeof selectedData === 'string') {
+        return Number(selectedData);
+    }
 
     return selectedData;
 }
