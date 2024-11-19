@@ -18,8 +18,12 @@ export function mergeHotelData(data: hotelDataResType[]) {
                 ...hotel,
                 name: hotel.name ? [hotel.name] : [],
                 location: {
-                    lat: hotel.location.lat ? [hotel.location.lat] : [],
-                    lng: hotel.location.lng ? [hotel.location.lng] : [],
+                    latsAndLngs: [
+                        {
+                            lat: hotel.location.lat ? hotel.location.lat : 0,
+                            lng: hotel.location.lng ? hotel.location.lng : 0,
+                        },
+                    ],
                     address: hotel.location.address
                         ? [hotel.location.address]
                         : [],
@@ -46,13 +50,12 @@ export function mergeHotelData(data: hotelDataResType[]) {
             // Merge location fields
             // Add to array if the field is not null or undefined
             existingHotel.location = {
-                lat: [
-                    ...existingHotel.location.lat,
-                    ...(hotel.location.lat ? [hotel.location.lat] : []),
-                ],
-                lng: [
-                    ...existingHotel.location.lng,
-                    ...(hotel.location.lng ? [hotel.location.lng] : []),
+                latsAndLngs: [
+                    ...existingHotel.location.latsAndLngs,
+                    {
+                        lat: hotel.location.lat ? hotel.location.lat : 0,
+                        lng: hotel.location.lng ? hotel.location.lng : 0,
+                    },
                 ],
                 address: [
                     ...existingHotel.location.address,
