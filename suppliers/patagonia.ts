@@ -1,6 +1,9 @@
 import { Supplier } from '../models/classes/supplier';
 import { Hotel, Image, Images } from '../models/interfaces/hotel';
-import { parseName } from '../services/utils/data_normalization';
+import {
+    parseName,
+    removeSpecialChars,
+} from '../services/utils/data_normalization';
 
 export class PatagoniaSupplier extends Supplier {
     name: string = 'Patagonia';
@@ -10,7 +13,7 @@ export class PatagoniaSupplier extends Supplier {
     mapImages(imageArray: any[]): Image[] {
         return imageArray.map((img: any) => ({
             link: img.url ?? '',
-            description: img.description ?? '',
+            description: img.description ? parseName(img.description) : '',
         }));
     }
 
@@ -32,10 +35,13 @@ export class PatagoniaSupplier extends Supplier {
                 lat: hotel.lat ?? 0,
                 lng: hotel.lng ?? 0,
                 address: hotel.address ? parseName(hotel.address) : '',
+                //! This supplier currently does not provide city and country fields
                 city: '',
                 country: '',
             };
-            const description = hotel.info ?? '';
+            const description = hotel.info
+                ? removeSpecialChars(hotel.info)
+                : '';
             const amenities = hotel.amenities
                 ? {
                       general: hotel.amenities ?? [],
@@ -43,7 +49,8 @@ export class PatagoniaSupplier extends Supplier {
                   }
                 : { general: [], room: [] };
             const images = hotel.images ? this.parseImages(hotel.images) : {};
-            const booking_conditions = hotel.BookingConditions ?? [];
+            //! This supplier currently does not provide booking conditions
+            //const booking_conditions = hotel.booking_conditions ? hotel.booking_conditions : [];
 
             return {
                 id,
@@ -53,7 +60,7 @@ export class PatagoniaSupplier extends Supplier {
                 description,
                 amenities,
                 images,
-                booking_conditions,
+                //booking_conditions,
             };
         });
     }

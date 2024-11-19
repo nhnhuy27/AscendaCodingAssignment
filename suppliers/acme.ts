@@ -1,6 +1,9 @@
 import { Supplier } from '../models/classes/supplier';
 import { Hotel, Image, Images } from '../models/interfaces/hotel';
-import { parseName } from '../services/utils/data_normalization';
+import {
+    parseName,
+    removeSpecialChars,
+} from '../services/utils/data_normalization';
 
 export class AcmeSupplier extends Supplier {
     name: string = 'Acme';
@@ -27,10 +30,14 @@ export class AcmeSupplier extends Supplier {
                 city: hotel.City ? parseName(hotel.City) : '',
 
                 // From the returned data, this supplier appears to currently provides country codes.
-                // So I will leave the field as is.
-                country: hotel.Country ?? '',
+                // I will parse it anyway.
+                // Country codes would most likely not be selected in the final data selection
+                //  if the country name is also provided
+                country: hotel.Country ? parseName(hotel.Country) : '',
             };
-            const description = hotel.Description;
+            const description = hotel.Description
+                ? removeSpecialChars(hotel.Description)
+                : '';
             const amenities = hotel.Facilities
                 ? {
                       general: hotel.Facilities ?? [],
@@ -38,7 +45,8 @@ export class AcmeSupplier extends Supplier {
                   }
                 : { general: [], room: [] };
             const images = {};
-            const booking_conditions = hotel.booking_conditions ?? [];
+            //! This supplier currently does not provide booking conditions
+            //const booking_conditions = hotel.BookingConditions ? hotel.BookingConditions : [];
 
             return {
                 id,
@@ -48,7 +56,7 @@ export class AcmeSupplier extends Supplier {
                 description,
                 amenities,
                 images,
-                booking_conditions,
+                //booking_conditions,
             };
         });
     }

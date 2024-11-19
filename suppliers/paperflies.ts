@@ -2,7 +2,7 @@ import { Supplier } from '../models/classes/supplier';
 import { Amenities, Hotel, Image, Images } from '../models/interfaces/hotel';
 import {
     parseName,
-    separateCamelCase,
+    removeSpecialChars,
 } from '../services/utils/data_normalization';
 
 export class PaperfliesSupplier extends Supplier {
@@ -13,7 +13,7 @@ export class PaperfliesSupplier extends Supplier {
     mapImages(imageArray: any[]): Image[] {
         return imageArray.map((img: any) => ({
             link: img.link ?? '',
-            description: img.caption ?? '',
+            description: img.caption ? parseName(img.caption) : '',
         }));
     }
     parseImages(images: any): Images {
@@ -41,7 +41,9 @@ export class PaperfliesSupplier extends Supplier {
                     ? parseName(hotel.location.country)
                     : '',
             };
-            const description = hotel.details;
+            const description = hotel.details
+                ? removeSpecialChars(hotel.details)
+                : '';
             const amenities = hotel.amenities
                 ? {
                       general: hotel.amenities.general ?? [],
