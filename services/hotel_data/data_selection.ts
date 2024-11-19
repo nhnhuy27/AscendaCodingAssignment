@@ -48,6 +48,32 @@ export function selectBestHotelData(mergedHotels: any[]): Hotel[] {
     return hotelsAfterSelection;
 }
 
+// Function to select the most common latitude and longitude pair
+// If there is a tie, select the first most common pair
+export function selectBestLatAndLng(latsAndLngs: {
+    lat: number,
+    lng: number
+}[]): { lat: number, lng: number } {
+    const count = new Map<string, number>();
+    let maxCount = 0;
+
+    let bestLat = 0;
+    let bestLng = 0;
+
+    latsAndLngs.forEach((latAndLng) => {
+        const key = `${latAndLng.lat}-${latAndLng.lng}`;
+        count.set(key, (count.get(key) || 0) + 1);
+
+        if (count.get(key)! > maxCount) {
+            maxCount = count.get(key)!;
+            bestLat = latAndLng.lat;
+            bestLng = latAndLng.lng;
+        }
+    });
+
+    return { lat: bestLat, lng: bestLng };
+}
+
 // Function to select best hotel location
 // Select the most common latitude, longitude, address, city, and country
 export function selectBestLocation(location: any): Location {
@@ -66,14 +92,10 @@ export function selectBestLocation(location: any): Location {
     );
 
     // Select the most common value for each location field
-    bestLocation.lat =
-        location.lat && location.lat.length > 0
-            ? (selectMostOccurrence(location.lat) as number)
-            : 0;
-    bestLocation.lng =
-        location.lng && location.lng.length > 0
-            ? (selectMostOccurrence(location.lng) as number)
-            : 0;
+    const bestLatAndLng = selectBestLatAndLng(location.latsAndLngs);
+
+    bestLocation.lat = bestLatAndLng.lat;
+    bestLocation.lng = bestLatAndLng.lng;
     bestLocation.address = selectMostOccurrence(location.address) as string;
     bestLocation.city = selectMostOccurrence(location.city) as string;
     bestLocation.country = countryNames.length
