@@ -13,8 +13,8 @@ import {
     removeSpecialChars,
     removeSpecialCharsAndToLower,
     separateCamelCase,
-} from '../utils/data_normalization';
-import { selectMostOccurrence } from '../utils/data_selection';
+} from '../../utils/data_normalization';
+import { selectMostOccurrence } from '../../utils/data_selection';
 
 //** fUNCTIONS TO SELECT THE BEST HOTEL DATA */
 // Function to select the best data for each hotel

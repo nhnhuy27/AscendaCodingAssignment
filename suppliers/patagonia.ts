@@ -1,9 +1,6 @@
 import { Supplier } from '../models/classes/supplier';
 import { Hotel, Image, Images } from '../models/interfaces/hotel';
-import {
-    parseName,
-    removeSpecialChars,
-} from '../services/utils/data_normalization';
+import { parseName, removeSpecialChars } from '../utils/data_normalization';
 
 export class PatagoniaSupplier extends Supplier {
     name: string = 'Patagonia';
